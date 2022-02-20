@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="a">Ingrese el valor de a:</string>
+    <string name="b">Ingrese el valor de b:</string>
+    <string name="c">Ingrese el valor de c:</string>
+</resources>
