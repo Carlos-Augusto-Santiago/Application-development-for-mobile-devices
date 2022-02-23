@@ -1,30 +1,30 @@
 package com.example.myapplication;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
+import android.content.Context;
 import android.os.Bundle;
+import android.app.Activity;
 import android.view.View;
-import android.widget.*;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-public class MainActivity extends Activity {
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class MainActivity extends Activity{
     @Override
     protected void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.activity_main);
         EditText jet1 = (EditText) findViewById(R.id.xet1);
-        jet1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        Button jbtn1 = (Button) findViewById(R.id.xbtn1);
+        jbtn1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    ImageView iconoDescuento = (ImageView) findViewById(R.id.xiv1);
-                    Drawable d = iconoDescuento.getDrawable();
-                    d = DrawableCompat.wrap(d);
-                    DrawableCompat.setTint(d,
-                            ContextCompat.getColor(MainActivity.this, R.color.micolor));
-                } // micolor es un archivo xml en la carpeta color.xml.
+            public void onClick(View view) {
+                
+                if (view != null) {
+                    InputMethodManager imm =(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
             }
         });
     }
 }
-
