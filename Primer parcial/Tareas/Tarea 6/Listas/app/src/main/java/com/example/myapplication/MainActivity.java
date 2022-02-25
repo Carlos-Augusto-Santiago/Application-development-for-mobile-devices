@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
                 }
             }
         }
-            
+
         );
         lv.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> av, View view, int i, long l) {
