@@ -2,11 +2,14 @@ package com.example.myapplication;
 
 import java.util.ArrayList;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener; import android.widget.*;
 public class MainActivity extends Activity {
     private ListView lv;
+    Bundle bdl;
+    Intent itn;
 
     protected void onCreate(Bundle b) {
         super.onCreate(b);
@@ -54,6 +57,10 @@ public class MainActivity extends Activity {
                 CharSequence cs = "Seleccionado: " + le.get_textoDebajo();
                 Toast t = Toast.makeText(MainActivity.this, cs, Toast.LENGTH_SHORT);
                 t.show();
+                itn = new Intent(MainActivity.this, SegundaActivity.class);
+                bdl = new Bundle();
+                itn.putExtras(bdl);
+                startActivity(itn);
             }
         });
     }

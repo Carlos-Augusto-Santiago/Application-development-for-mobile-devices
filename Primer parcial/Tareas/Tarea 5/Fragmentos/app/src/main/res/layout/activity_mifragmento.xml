@@ -18,12 +18,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Aceptar" />
+            android:text="Aceptar" >
+        </Button>
         <Button
             android:id="@+id/xbnC"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancelar" />
+            android:text="Cancelar" >
+        </Button>
     </LinearLayout>
 </LinearLayout>

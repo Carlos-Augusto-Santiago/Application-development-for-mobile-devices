@@ -6,12 +6,13 @@ import android.os.*;
 import android.view.*;
 import android.view.View.*;
 import android.widget.*;
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements FragmentoListener {
     TextView xtv;
     Button jbn;
     @Override
     public void onCreate(Bundle b) {
-        super.onCreate(b); setContentView(R.layout.activity_main);
+        super.onCreate(b);
+        setContentView(R.layout.activity_main);
         xtv = (TextView) findViewById(R.id.xtv);
         jbn = (Button) findViewById(R.id.xbn);
         jbn.setOnClickListener(new OnClickListener() {
@@ -30,7 +31,7 @@ public class MainActivity extends Activity {
             }
         });
     }
-
+    @Override
     public void digitado(int r, String s) {
         TextView jtv = (TextView) findViewById(R.id.xtv);
         if (r == MiFragmento.OK) {
