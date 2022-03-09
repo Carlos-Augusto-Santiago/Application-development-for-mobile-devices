@@ -34,20 +34,22 @@ public class CambiarContactos extends Activity {
         CharSequence text = "No se pueden guardar esos valores!";
         int duration = Toast.LENGTH_SHORT;
 
-        DbmsSQLiteHelper dsqlh = new DbmsSQLiteHelper(this);
-        sqld = dsqlh.getWritableDatabase();
-
-
         checar.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
                 int id = Integer.parseInt(jetI.getText().toString());
                 Cursor c;
+
+                DbmsSQLiteHelper dsqlh = new DbmsSQLiteHelper(view.getContext());
+                sqld = dsqlh.getWritableDatabase();
+
                 c = sqld.rawQuery("SELECT id FROM Contactos WHERE id = " + id + "LIMIT 1", null);
                 if(c != null){
                     jtvN.setVisibility(View.VISIBLE);
                     jetN.setVisibility(View.VISIBLE);
                     checar.setVisibility(View.GONE);
                 }
+
+                sqld.close();
             }
         });
 

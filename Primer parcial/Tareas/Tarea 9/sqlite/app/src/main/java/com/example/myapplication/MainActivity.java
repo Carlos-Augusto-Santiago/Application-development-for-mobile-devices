@@ -37,12 +37,13 @@ public class MainActivity extends Activity {
         jbnC.setVisibility(View.GONE);
         jbnD.setVisibility(View.GONE);
 
-        DbmsSQLiteHelper dsqlh = new DbmsSQLiteHelper(this);
-        sqld = dsqlh.getWritableDatabase();
-
         Context context = getApplicationContext();
         CharSequence text = "No se pueden guardar esos valores!";
         int duration = Toast.LENGTH_SHORT;
+
+
+        DbmsSQLiteHelper dsqlh = new DbmsSQLiteHelper(this);
+        sqld = dsqlh.getWritableDatabase();
 
         int profile_counts = dsqlh.getProfilesCount();
         if (profile_counts != 0) {
@@ -62,9 +63,17 @@ public class MainActivity extends Activity {
                     ContentValues cv = new ContentValues();
                     cv.put("id", id);
                     cv.put("nombre", nombre);
+
+
+                    DbmsSQLiteHelper dsqlh = new DbmsSQLiteHelper(v.getContext());
+                    sqld = dsqlh.getWritableDatabase();
+
                     sqld.insert("Contactos", null, cv);
                     jetI.setText("");
                     jetN.setText("");
+
+                    sqld.close();
+
                     Toast ts = Toast.makeText(context, "Contacto guardado", duration);
                     ts.show();
                 }
@@ -73,6 +82,10 @@ public class MainActivity extends Activity {
         jbnL.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 String id, nombre;
+
+                DbmsSQLiteHelper dsqlh = new DbmsSQLiteHelper(v.getContext());
+                sqld = dsqlh.getWritableDatabase();
+
                 Cursor c = sqld.rawQuery("SELECT id,nombre FROM Contactos", null);
                 jtvL.setText("");
                 if (c.moveToFirst()) {
@@ -82,6 +95,8 @@ public class MainActivity extends Activity {
                         jtvL.append(" " + id + "\t" + nombre + "\n");
                     } while (c.moveToNext());
                 }
+
+                sqld.close();
             }
         });
         jbnC.setOnClickListener(new OnClickListener() {
