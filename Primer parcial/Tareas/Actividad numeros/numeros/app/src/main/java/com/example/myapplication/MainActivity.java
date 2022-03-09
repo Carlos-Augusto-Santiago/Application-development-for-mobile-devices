@@ -36,13 +36,34 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"La cantidad mínima de caracteres es 3 y la máxima 4", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    String menor = public
-                    jtv1.append();
+                    String men = menor(jet1.getText().toString());
+                    String may = mayor(men);
+
+                    jtv1.append("  " + may);
                     jtv1.append("\r\n");
-
-
-                    jtv1.append(mayor);
-
+                    jtv1.append("- " + men);
+                    jtv1.append("\r\n");
+                    jtv1.append("----------");
+                    jtv1.append("\r\n");
+                    int resultado = resta(Integer.parseInt(may),Integer.parseInt(men));
+                    jtv1.append("  " + resultado);
+                    jtv1.append("\r\n");
+                    int menor = Integer.parseInt(men);
+                    while(menor != resultado){
+                        jtv1.append("Aqui bien");
+                        jtv1.append("\r\n");
+                        men = menor(Integer.toString(resultado));
+                        may = mayor(Integer.toString(resultado));
+                        jtv1.append("  " + may);
+                        jtv1.append("\r\n");
+                        jtv1.append("- " + men);
+                        jtv1.append("\r\n");
+                        jtv1.append("----------");
+                        jtv1.append("\r\n");
+                        resultado = resta(Integer.parseInt(may),Integer.parseInt(men));
+                        jtv1.append("  " + resultado);
+                        jtv1.append("\r\n");
+                    }
                     jtv1.setVisibility(View.VISIBLE);
                 }
             }
@@ -57,12 +78,15 @@ public class MainActivity extends AppCompatActivity {
         return min;
     }
     public String mayor(String numero){
+        // ordenando numero de mayor a menor
         String mayor = numero;
         StringBuilder may = new StringBuilder(mayor);
         mayor = may.reverse().toString();
         return mayor;
     }
-    public void Numero(String num1, String num2){
-
+    public int resta(int num1, int num2){
+        // restandole al mayor el menor
+        int res = num1 - num2;
+        return res;
     }
 }
