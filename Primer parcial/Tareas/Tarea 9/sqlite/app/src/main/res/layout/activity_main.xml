@@ -6,6 +6,13 @@
     android:orientation="vertical">
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Para ingresar un nuevo usuario, ingresar los datos correspondientes
+        \nPara cambiar un usuario, ingresar un id a un usuario, dar clic en cambiar, cambiar el nombre y después dar clic en el boton de aceptar
+        \nPara eliminar, ingresar un id correspondiente a un usuario y dar clic en eliminar" />
+
+    <TextView
         android:id="@+id/xtvI"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +20,7 @@
 
     <EditText
         android:id="@+id/xetI"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number" />
 
@@ -27,7 +34,7 @@
         android:id="@+id/xetN"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"/>
+        android:inputType="text" />
 
     <Button
         android:id="@+id/xbnA"
@@ -35,17 +42,31 @@
         android:layout_height="wrap_content"
         android:text="@string/ins" />
 
-    <Button
-        android:id="@+id/xbnC"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/cambios"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/xbnC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cambios" />
+
+        <Button
+            android:id="@+id/xbtnA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Aceptar" />
+    </RelativeLayout>
+
 
     <Button
         android:id="@+id/xbnD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/baja"/>
+        android:text="@string/baja" />
 
     <Button
         android:id="@+id/xbnL"

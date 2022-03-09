@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class MainActivity extends Activity {
     EditText jetI, jetN;
-    Button jbnA, jbnL, jbnC, jbnD;
+    Button jbnA, jbnL, jbnC, jbtnA, jbnD;
     TextView jtvL;
     SQLiteDatabase sqld;
 
@@ -32,15 +32,16 @@ public class MainActivity extends Activity {
         jtvL = findViewById(R.id.xtvL);
 
         jbnC = findViewById(R.id.xbnC);
+        jbtnA = findViewById(R.id.xbtnA);
         jbnD = findViewById(R.id.xbnD);
 
         jbnC.setVisibility(View.GONE);
+        jbtnA.setVisibility(View.GONE);
         jbnD.setVisibility(View.GONE);
 
         Context context = getApplicationContext();
         CharSequence text = "No se pueden guardar esos valores!";
         int duration = Toast.LENGTH_SHORT;
-
 
         DbmsSQLiteHelper dsqlh = new DbmsSQLiteHelper(this);
         sqld = dsqlh.getWritableDatabase();
@@ -55,37 +56,35 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 String id = jetI.getText().toString();
                 String nombre = jetN.getText().toString();
-                if(id.equals("") || nombre.equals("")){
+                if (id.equals("") || nombre.equals("")) {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
-                }
-                else{
+                } else {
                     ContentValues cv = new ContentValues();
                     cv.put("id", id);
                     cv.put("nombre", nombre);
 
-
-                    DbmsSQLiteHelper dsqlh = new DbmsSQLiteHelper(v.getContext());
-                    sqld = dsqlh.getWritableDatabase();
-
                     sqld.insert("Contactos", null, cv);
                     jetI.setText("");
                     jetN.setText("");
-
-                    sqld.close();
-
                     Toast ts = Toast.makeText(context, "Contacto guardado", duration);
                     ts.show();
+                }
+                int profile_counts = dsqlh.getProfilesCount();
+                if (profile_counts != 0) {
+                    jbnC.setVisibility(View.VISIBLE);
+                    jbnD.setVisibility(View.VISIBLE);
                 }
             }
         });
         jbnL.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
+                int profile_counts = dsqlh.getProfilesCount();
+                if (profile_counts != 0) {
+                    jbnC.setVisibility(View.VISIBLE);
+                    jbnD.setVisibility(View.VISIBLE);
+                }
                 String id, nombre;
-
-                DbmsSQLiteHelper dsqlh = new DbmsSQLiteHelper(v.getContext());
-                sqld = dsqlh.getWritableDatabase();
-
                 Cursor c = sqld.rawQuery("SELECT id,nombre FROM Contactos", null);
                 jtvL.setText("");
                 if (c.moveToFirst()) {
@@ -95,20 +94,57 @@ public class MainActivity extends Activity {
                         jtvL.append(" " + id + "\t" + nombre + "\n");
                     } while (c.moveToNext());
                 }
-
-                sqld.close();
+                c.close();
             }
         });
         jbnC.setOnClickListener(new OnClickListener() {
-            public void onClick(View v){
-                itn = new Intent(MainActivity.this, CambiarContactos.class);
-                startActivity(itn);
+            public void onClick(View v) {
+                String i = jetI.getText().toString();
+
+                if (!i.equals("")) {
+                    int id = Integer.parseInt(jetI.getText().toString());
+                    Cursor c;
+                    c = sqld.rawQuery("SELECT nombre FROM Contactos WHERE id = " + id, null);
+                    String ids;
+                    if (c.moveToFirst()) {
+                        jbtnA.setVisibility(View.VISIBLE);
+                        ids = c.getString(0);
+                        jetN.append(ids);
+                    } else {
+                        Toast toast = Toast.makeText(context, "Error", duration);
+                        toast.show();
+                    }
+                } else {
+                    Toast toast = Toast.makeText(context, "No se puede checar ese valor", duration);
+                    toast.show();
+                }
             }
         });
+
+        jbtnA.setOnClickListener(new OnClickListener() {
+            public void onClick(View view) {
+                String name = jetN.getText().toString();
+                int id = Integer.parseInt(jetI.getText().toString());
+                if (!name.equals("")) {
+                    sqld.execSQL("UPDATE Contactos SET nombre = '" + name + "' WHERE id = '" + id + "'");
+                    Toast toast = Toast.makeText(context, "Valor modificado", duration);
+                    toast.show();
+                    jetI.setText("");
+                    jetN.setText("");
+                } else {
+                    Toast toast = Toast.makeText(context, "No se puede guardar ese valor", duration);
+                    toast.show();
+                }
+            }
+        });
+
         jbnD.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
-                itn = new Intent(MainActivity.this, EliminarContactos.class);
-                startActivity(itn);
+                int id = Integer.parseInt(jetI.getText().toString());
+                sqld.execSQL("DELETE FROM Contactos WHERE id = " + id);
+                jetI.setText("");
+                Toast toast = Toast.makeText(context, "Usuario borrado " + id, duration);
+                toast.show();
             }
         });
     }

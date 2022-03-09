@@ -6,7 +6,7 @@
     <string name="snom">Nombre:</string>
     <string name="sid">ID:</string>
     <string name="ins">Alta</string>
-    <string name="cambios">Cambios</string>
+    <string name="cambios">Cambiar</string>
     <string name="baja">Baja</string>
     <string name="cons">Lista</string>
     <string name="change_id">Ingresa un id equivalente a un usuario</string>

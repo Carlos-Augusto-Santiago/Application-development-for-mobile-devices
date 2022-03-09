@@ -18,12 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".CambiarContactos">
-        </activity>
-        <activity
-            android:name=".EliminarContactos">
-        </activity>
+
     </application>
 
 </manifest>
