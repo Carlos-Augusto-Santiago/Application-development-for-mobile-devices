@@ -13,18 +13,20 @@ public class Lienzo extends View {
     }
 
     protected void onDraw(Canvas c) {
-        super.onDraw(c);
-        p = new Paint();
+        super.onDraw(c); // Canvas pinta atributos
+        p = new Paint(); // Paint asigna atributos
         r = new Path();
         x = c.getWidth();
-        x0 = x / 2;// También: getMeasuredHeight(), o getRight(), x=480
+        x0 = x / 2; // También: getMeasuredWidth(), o getRight(), x=480
         y = c.getHeight();
-        y0 = y / 2;// También: getMeasuredHeight(), o getBottom(), y=762
+        y0 = y / 2; // También: getMeasuredHeight(), o getBottom(), y=762
         p.setColor(Color.WHITE); // Fondo blanco
         c.drawPaint(p);
-        p.setColor(Color.BLACK); // Texto negro p.setTextSize(20);
+        p.setColor(Color.BLACK); // Texto negro
+        p.setTextSize(20);
         c.drawText("0,0", x0 + 5, y0 + 20, p);
-        p.setColor(Color.rgb(0, 0, 255));// Ejes azules c.drawLine(x0, 0, x0, y, p);
+        p.setColor(Color.rgb(0, 0, 255)); // Ejes azules
+        c.drawLine(x0, 0, x0, y, p);
         c.drawLine(0, y0, x, y0, p);
         p.setColor(Color.BLUE);
         c.drawText("senA", 20, 20, p);

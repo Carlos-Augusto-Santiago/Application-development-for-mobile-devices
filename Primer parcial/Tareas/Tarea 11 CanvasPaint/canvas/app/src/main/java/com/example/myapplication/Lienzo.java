@@ -32,16 +32,21 @@ public class Lienzo extends View{
 
         // circulo
         p.setColor(Color.argb(100, 200, 100, 100));
-        c.drawCircle(x/2-120, y/2+120, 100, p);
+        c.drawCircle(x/2-250, y/2+500, 100, p);
 
         // Ovalo
         p.setColor(Color.argb(99, 170, 100, 100));
         RectF rect = new RectF(x/4, y/3,x/6 ,y/4);
+        p.setColor(Color.argb(102, 240, 140, 130));
         c.drawOval(rect, p);
 
-        //Rectangulo
-        c.drawRect(100, 100, 100, 100, p);
+        // Rectangulo
+        p.setColor(Color.argb(211, 40, 124, 230));
+        c.drawRect(x/2+150, y/4+50, x-150, y/4-100, p);
 
-
+        // Arco
+        RectF oval = new RectF(x/2+150, y/2+500,x-150 ,y/2+800);
+        p.setColor(Color.argb(121, 240, 14, 30));
+        c.drawArc(oval,-90,120,false,p);
     }
 }
