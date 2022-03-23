@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFFFF"
+    android:orientation="vertical"
+    >
+    <Button
+        android:id="@+id/xbn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="REPRODUCIR"/>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp">
+        <TableRow>
+            <VideoView
+                android:id="@+id/xvv1"
+                android:layout_width="410dp"
+                android:layout_height="400dp" />
+            <VideoView
+                android:id="@+id/xvv2"
+                android:layout_width="410dp"
+                android:layout_height="400dp"/>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>
