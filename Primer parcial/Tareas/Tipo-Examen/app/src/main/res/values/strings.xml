@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="xsops">Opciones</string>
+    <string name="action_settings">Ajustes</string> <string-array name="xops">
+    <item>2</item>
+    <item>3</item>
+    </string-array>
+</resources>
