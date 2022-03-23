@@ -1,13 +1,16 @@
 package com.example.myapplication;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.*;
 import android.os.*;
 import android.widget.TextView;
-public class MainActivity extends Activity implements SensorEventListener{
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
     SensorManager sm;
     Sensor s;
+    SensorEventListener se;
     int n;
     double x, y, z, a, m, g;
     TextView jtvX, jtvY, jtvZ, jtvA, jtvM, jtvG;
@@ -16,26 +19,30 @@ public class MainActivity extends Activity implements SensorEventListener{
         setContentView(R.layout.activity_main);
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         s = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sm.registerListener(this, s, SensorManager.SENSOR_DELAY_FASTEST);
         x=0; y=0; z=0; a=0; m=0; n=0;
         g = SensorManager.STANDARD_GRAVITY;
-        jtvX = (TextView) findViewById(R.id.xtvX);
-        jtvY = (TextView) findViewById(R.id.xtvY);
-        jtvZ = (TextView) findViewById(R.id.xtvZ);
-        jtvA = (TextView) findViewById(R.id.xtvA);
-        jtvM = (TextView) findViewById(R.id.xtvM);
-        jtvG = (TextView) findViewById(R.id.xtvG);
+        jtvX = findViewById(R.id.xtvX);
+        jtvY = findViewById(R.id.xtvY);
+        jtvZ = findViewById(R.id.xtvZ);
+        jtvA = findViewById(R.id.xtvA);
+        jtvM = findViewById(R.id.xtvM);
+        jtvG = findViewById(R.id.xtvG);
         new MiAsincronia().execute();
+        se = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                x = sensorEvent.values[0];
+                y = sensorEvent.values[1];
+                z = sensorEvent.values[2];
+                a = Math.sqrt(x*x + y*y + z*z);
+                if(a>m)
+                    m = a;
+            }
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) { }
+        };
+
     }
-    public void onSensorChanged(SensorEvent se){
-        x = se.values[0];
-        y = se.values[1];
-        z = se.values[2];
-        a = Math.sqrt(x*x + y*y + z*z);
-        if(a>m)
-            m = a;
-    }
-    public void onAccuracyChanged(Sensor s, int i){}
     class MiAsincronia extends AsyncTask<Void, Void, Void>{
         protected Void doInBackground(Void... x){
             while(true){

@@ -1,8 +1,8 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTabHost;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTabHost;
 
 public class MainActivity extends FragmentActivity {
     private FragmentTabHost tabHost;
@@ -10,13 +10,15 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.activity_main);
-        tabHost= (FragmentTabHost) findViewById(android.R.id.tabhost);
+        tabHost= findViewById(android.R.id.tabhost);
         tabHost.setup(this, getSupportFragmentManager(),android.R.id.tabcontent);
         tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("Pestaña 1"), Tab1.class,
                 null);
         tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("Pestaña 2"), Tab2.class,
                 null);
         tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("Pestaña 3"), Tab3.class,
+                null);
+        tabHost.addTab(tabHost.newTabSpec("tab4").setIndicator("Pestaña 4"), Tab4.class,
                 null);
     }
 }

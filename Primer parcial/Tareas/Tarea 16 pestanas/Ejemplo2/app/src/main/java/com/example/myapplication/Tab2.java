@@ -1,7 +1,7 @@
 package com.example.myapplication;
 
 import android.os.*;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.*;
 public class Tab2 extends Fragment {
     @Override
