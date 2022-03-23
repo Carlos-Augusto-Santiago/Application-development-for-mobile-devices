@@ -13,16 +13,12 @@ public class MainActivity extends Activity implements OnClickListener {
     VideoView vvw1, vvw2;
     Uri uri;
     MediaController mcr;
-    DisplayMetrics displayMetrics;
-    int x;
+
 
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.activity_main);
-        displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        x = displayMetrics.widthPixels;
 
         jbn = (Button) findViewById(R.id.xbn);
         jbn.setOnClickListener(this);
