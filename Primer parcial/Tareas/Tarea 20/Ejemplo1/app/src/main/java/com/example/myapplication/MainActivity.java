@@ -7,24 +7,32 @@ import android.view.View;
 import android.widget.*;
 public class MainActivity extends Activity { // ServiceTimerActivity
     private TextView jtv;
-    private Button jbn;
+    private Button jbn, jbn2;
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.activity_main);
         jtv = (TextView) findViewById(R.id.xtvT);
         jbn = (Button) findViewById(R.id.xbnI);
+        jbn2 = (Button) findViewById(R.id.xbnT);
+
         jbn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 initCrono();
             }
         });
-        Button stopButton = (Button) findViewById(R.id.xbnT);
-        stopButton.setOnClickListener(new View.OnClickListener() {
+        jbn2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                stopCrono();
+                refreshCrono(0);
             }
         });
+        if(jbn.getText() == "Pausar"){
+            jbn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    stopCrono();
+                }
+            });
+        }
         MiCrono.setUpdateListener(this);
     }
     @Override
@@ -33,6 +41,8 @@ public class MainActivity extends Activity { // ServiceTimerActivity
         super.onDestroy();
     }
     private void initCrono() {
+        jbn.setText("Pausar");
+        jbn2.setText("Continuar");
         Intent in = new Intent(this, MiCrono.class);
         startService(in);
     }
