@@ -1,66 +1,76 @@
-#include "DHT.h"
-#include <SoftwareSerial.h>
+#include <Adafruit_Sensor.h>
 
+// Incluimos librería
+#include <DHT.h>
+ 
+// Definimos el pin digital donde se conecta el sensor
 #define DHTPIN 2
+// Dependiendo del tipo de sensor
 #define DHTTYPE DHT11
-
-#define Temperatura 0
-#define Humedad 1
-#define Aparente 2
-
+// Definimos el pin para el potenciometro
+#define pot A0
+ 
+// Inicializamos el sensor DHT11
 DHT dht(DHTPIN, DHTTYPE);
-SoftwareSerial Blue(2,3);
-
-char data;
-
+ 
 void setup() {
-  dht.begin();  
+  // Inicializamos comunicación serie
   Serial.begin(9600);
-  Blue.begin(9600);
-  
-}
+ 
+  // Comenzamos el sensor DHT
+  dht.begin();
 
+  // Configuramos el pin analogo
+  pinMode(pot,INPUT);
+ 
+}
+ 
 void loop() {
-  while(Blue.available() == 0);
-  if(Blue.available()>0){
-    data = Blue.peek();
-  }
-  delay(400);
-  switch (data){
-      case 't':
-      case 'T':
-        Serial.print("Temperatura:");
-        Serial.print(CalculoAmbiente(Temperatura));
-        break;
-      case 'h':
-      case 'H':
-        Serial.print("Humedad:");
-        Serial.print(CalculoAmbiente(Humedad));
-        break;
-      case 'a':
-      case 'A':
-        Serial.print("Aparente:");
-        Serial.print(CalculoAmbiente(Aparente));
-        break;      
+ 
+    //Codigo principal
+    if(Serial.available()>0){
+    char dato = Serial.read();   
+        //Codigo para la temperatura  
+        if(dato == 't'){      
+          // Leemos la humedad relativa
+          float h = dht.readHumidity();
+          // Leemos la temperatura en grados centígrados (por defecto)
+          float t = dht.readTemperature();
+          // Leemos la temperatura en grados Fahreheit
+          float f = dht.readTemperature(true);
+          
+          // Comprobamos si ha habido algún error en la lectura
+          if (isnan(h) || isnan(t) || isnan(f)) {
+            Serial.println("Error obteniendo los datos del sensor DHT11");
+            return;
+          }
+          
+          // Calcular el índice de calor en Fahreheit
+          float hif = dht.computeHeatIndex(f, h);
+          // Calcular el índice de calor en grados centígrados
+          float hic = dht.computeHeatIndex(t, h, false);
+          
+          Serial.print("Humedad: ");
+          Serial.print(h);
+          Serial.print(" %\t");
+          Serial.print("Temperatura: ");
+          Serial.print(t);
+          Serial.print(" *C ");
+          Serial.print(f);
+          Serial.print(" *F\t");
+          Serial.print("Índice de calor: ");
+          Serial.print(hic);
+          Serial.print(" *C ");
+          Serial.print(hif);
+          Serial.println(" *F");
+        }
+        // codigo del potenciometro
+        if(dato == 'p'){
+          // Variable flotante 
+          float valor = 0;
+          valor = analogRead(pot);
+          Serial.print(valor);          
+        }
     }
-}
-
-float CalculoAmbiente (int Opcion){
-  float T = dht.readTemperature();
-  float H = dht.readHumidity();
-  float A = dht.computeHeatIndex(T, H, false);
-  switch (Opcion){
-    case Temperatura:
-      return T;
-      break;
-    case Humedad:
-      return H;
-      break;
-     case Aparente:      
-      return A;
-      break;
-     default:
-      return -100;
-      break;
-  }
+    delay(500);
 }
