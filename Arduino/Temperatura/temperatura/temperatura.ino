@@ -1,76 +1,132 @@
-#include <Adafruit_Sensor.h>
-
 // Incluimos librería
 #include <DHT.h>
- 
-// Definimos el pin digital donde se conecta el sensor
-#define DHTPIN 2
-// Dependiendo del tipo de sensor
-#define DHTTYPE DHT11
-// Definimos el pin para el potenciometro
-#define pot A0
- 
-// Inicializamos el sensor DHT11
-DHT dht(DHTPIN, DHTTYPE);
- 
-void setup() {
-  // Inicializamos comunicación serie
-  Serial.begin(9600);
- 
-  // Comenzamos el sensor DHT
-  dht.begin();
+#include <SoftwareSerial.h>  
 
-  // Configuramos el pin analogo
-  pinMode(pot,INPUT);
- 
+#define DHTTYPE DHT11
+
+//Capcitancia
+#define analogPin      1          
+#define chargePin      13         
+#define dischargePin   11         
+#define resistorValue  10000.0F   
+unsigned long startTime;
+unsigned long elapsedTime;
+float microFarads;                // floating point variable to preserve precision, make calculations
+float nanoFarads;
+
+
+//Tacometro
+#define tacometroPin 9
+
+SoftwareSerial miBT(2, 3);  // pin 2 como RX, pin 3 como TX
+                                  
+int count = 0;
+float Tiempo_giro = 0.0;
+float RPM;
+                                  
+// Temperatura
+const int DHTPin = 5;     
+float h;
+float t ;
+DHT dht(DHTPin, DHTTYPE);
+
+//Voltaje
+float lectura;
+float volt;
+#define analogVolt 0
+
+String msg;
+
+void setup(){
+  pinMode(tacometroPin , INPUT);
+  pinMode(analogVolt,INPUT);
+  pinMode(chargePin, OUTPUT);     // set chargePin to output
+  digitalWrite(chargePin, LOW);
+  miBT.begin(9600);    // comunicacion serie entre Arduino y el modulo a 38400 bps
+  Serial.begin(9600);             // initialize serial transmission for debugging
+  Serial.println("listo");
+  dht.begin();
 }
+
+void loop(){
+  if (miBT.available() > 0){ 
+    msg = miBT.readString(); 
+    Serial.println("Android Command: " + msg);
+  }
+
+  Temp();
+  Voltaje();
+  Capacitancia();
+  Tacometro();
+  enviarlecturas();
+  delay(50);
+}
+
+void enviarlecturas(){
+  String c;
+  if (microFarads > 1){
+    c = String((long)microFarads) + " microfarads";
+  }
+  else{
+    // if value is smaller than one microFarad, convert to nanoFarads (10^-9 Farad).
+    // This is  a workaround because miBT.print will not print floats
+    nanoFarads = microFarads * 1000.0;      // multiply by 1000 to convert to nanoFarads (10^-9 Farads)
+    c = String((long)microFarads) + " nanoFarads";
+  }
+   miBT.println(String(h)+ "&" + String(t) + "&" + String(volt) + "&" + String(c) + "&" + String(RPM));
+}
+
+//Medir Temperatura
+void Temp(){
+    // Reading temperature or humidity takes about 250 milliseconds!
+    h = dht.readHumidity();
+    t = dht.readTemperature();
+
+   if (isnan(h) || isnan(t)) {
+      Serial.println("Failed to read from DHT sensor!");
+      return;
+   }
+}
+
+//Medir Voltaje
+void Voltaje(){
+  lectura = analogRead(analogVolt);
+  volt = lectura /1023 * 5.0;
+}
+
+//Medir Capacitancia
+void Capacitancia(){
+  digitalWrite(chargePin, HIGH);  // set chargePin HIGH and capacitor charging
+  startTime = millis();
+  while(analogRead(analogPin) < 648){       // 647 is 63.2% of 1023, which corresponds to full-scale voltage
+  }
+  elapsedTime= millis() - startTime;
  
-void loop() {
- 
-    //Codigo principal
-    if(Serial.available()>0){
-    char dato = Serial.read();   
-        //Codigo para la temperatura  
-        if(dato == 't'){      
-          // Leemos la humedad relativa
-          float h = dht.readHumidity();
-          // Leemos la temperatura en grados centígrados (por defecto)
-          float t = dht.readTemperature();
-          // Leemos la temperatura en grados Fahreheit
-          float f = dht.readTemperature(true);
-          
-          // Comprobamos si ha habido algún error en la lectura
-          if (isnan(h) || isnan(t) || isnan(f)) {
-            Serial.println("Error obteniendo los datos del sensor DHT11");
-            return;
-          }
-          
-          // Calcular el índice de calor en Fahreheit
-          float hif = dht.computeHeatIndex(f, h);
-          // Calcular el índice de calor en grados centígrados
-          float hic = dht.computeHeatIndex(t, h, false);
-          
-          Serial.print("Humedad: ");
-          Serial.print(h);
-          Serial.print(" %\t");
-          Serial.print("Temperatura: ");
-          Serial.print(t);
-          Serial.print(" *C ");
-          Serial.print(f);
-          Serial.print(" *F\t");
-          Serial.print("Índice de calor: ");
-          Serial.print(hic);
-          Serial.print(" *C ");
-          Serial.print(hif);
-          Serial.println(" *F");
-        }
-        // codigo del potenciometro
-        if(dato == 'p'){
-          // Variable flotante 
-          float valor = 0;
-          valor = analogRead(pot);
-          Serial.print(valor);          
-        }
-    }
-    delay(500);
+ // convert milliseconds to seconds ( 10^-3 ) and Farads to microFarads ( 10^6 ),  net 10^3 (1000)
+  microFarads = ((float)elapsedTime / resistorValue) * 1000;
+  //Serial.print(elapsedTime);       // print the value to serial port
+  //Serial.print(" mS    ");         // print units and carriage return  
+
+  /* dicharge the capacitor  */
+  digitalWrite(chargePin, LOW);             // set charge pin to  LOW
+  pinMode(dischargePin, OUTPUT);            // set discharge pin to output
+  digitalWrite(dischargePin, LOW);          // set discharge pin LOW
+  while(analogRead(analogPin) > 0){         // wait until capacitor is completely discharged
+  }
+  pinMode(dischargePin, INPUT);            // set discharge pin back to input
+}
+
+//Medir RPM
+void CalcularRPM(){
+  Tiempo_giro = millis()- Tiempo_giro;
+  RPM = 60000.0 / Tiempo_giro;
+  Tiempo_giro = millis();  
+}
+
+void Tacometro(){
+  if(digitalRead(tacometroPin)!= HIGH){
+    while (digitalRead(tacometroPin) != HIGH){}
+      CalcularRPM();
+  }
+  Serial.println(RPM);
 }
