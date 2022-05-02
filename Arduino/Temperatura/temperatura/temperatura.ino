@@ -18,7 +18,7 @@ float nanoFarads;
 //Tacometro
 #define tacometroPin 9
 
-SoftwareSerial miBT(2, 3);  // pin 2 como RX, pin 3 como TX
+SoftwareSerial miBT(2, 3);  // pin 3 como RX, pin 2 como TX
                                   
 int count = 0;
 float Tiempo_giro = 0.0;
@@ -48,17 +48,17 @@ void setup(){
   dht.begin();
 }
 
-void loop(){
+void loop(){  
   if (miBT.available() > 0){ 
     msg = miBT.readString(); 
     Serial.println("Android Command: " + msg);
-  }
-
-  Temp();
-  Voltaje();
+  }  
+  Temp();  
+  Voltaje();  
   Capacitancia();
-  Tacometro();
+  Tacometro();  
   enviarlecturas();
+  
   delay(50);
 }
 
@@ -101,8 +101,6 @@ void Capacitancia(){
   while(analogRead(analogPin) < 648){       // 647 is 63.2% of 1023, which corresponds to full-scale voltage
   }
   elapsedTime= millis() - startTime;
- 
- // convert milliseconds to seconds ( 10^-3 ) and Farads to microFarads ( 10^6 ),  net 10^3 (1000)
   microFarads = ((float)elapsedTime / resistorValue) * 1000;
   //Serial.print(elapsedTime);       // print the value to serial port
   //Serial.print(" mS    ");         // print units and carriage return  
@@ -124,9 +122,7 @@ void CalcularRPM(){
 }
 
 void Tacometro(){
-  if(digitalRead(tacometroPin)!= HIGH){
-    while (digitalRead(tacometroPin) != HIGH){}
-      CalcularRPM();
-  }
-  Serial.println(RPM);
+  if(digitalRead(tacometroPin)!= HIGH){ 
+    CalcularRPM();
+  }  
 }
