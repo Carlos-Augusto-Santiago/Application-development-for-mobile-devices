@@ -7,6 +7,7 @@ import android.graphics.Point;
 
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.Projection;
+import com.google.firebase.firestore.model.mutation.Overlay;
 
 public class OverlayMapa extends Overlay {
     private Double latitud = 37.40 * 1E6;
