@@ -41,7 +41,7 @@ public class Comunicacion implements ActionListener{
 
         f.add("Center",ta);
         f.setLocationRelativeTo(null);
-        f.setVisible(true);        
+        f.setVisible(true);                
     }
     public static void main(String[] args) {
         new Comunicacion();
