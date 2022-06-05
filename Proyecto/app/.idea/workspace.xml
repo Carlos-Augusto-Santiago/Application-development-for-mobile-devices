@@ -14,13 +14,15 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e1401826-4b7f-45ee-a51d-cc19ca4dcec8" name="Default Changelist" comment="" />
+    <list default="true" id="e1401826-4b7f-45ee-a51d-cc19ca4dcec8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../Tareas/TareaEnviarMensaje/NFC/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Tareas/TareaEnviarMensaje/NFC/.idea/gradle.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/carlossantiago/.android/avd/Pixel_2_API_31.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[R5CT3034ZKJ]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
