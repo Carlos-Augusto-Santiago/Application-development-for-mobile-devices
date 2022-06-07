@@ -1,0 +1,4 @@
+#Fri Jun 03 08:04:01 CDT 2022
+base.0=/Users/carlossantiago/Documents/Application-development-for-mobile-devices/Proyecto2/app/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
