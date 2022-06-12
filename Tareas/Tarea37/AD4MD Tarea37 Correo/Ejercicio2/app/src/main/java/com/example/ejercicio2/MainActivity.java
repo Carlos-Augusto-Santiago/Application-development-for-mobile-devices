@@ -21,11 +21,11 @@ public class MainActivity extends AppCompatActivity {
         Button addImage = (Button) findViewById(R.id.send_email);
         addImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Mail m = new Mail("gmailusername@gmail.com", "password");
+                Mail m = new Mail("casper4841@gmail.com", "AbREQp!ikm*4RAG");
 
-                String[] toArr = {"bla@bla.com", "lala@lala.com"};
+                String[] toArr = {"nwasantiago611@gmail.com", "nwasantiago611@gmail.com"};
                 m.setTo(toArr);
-                m.setFrom("wooo@wooo.com");
+                m.setFrom("nwasantiago611@gmail.com");
                 m.setSubject("This is an email sent using my Mail JavaMail wrapper from an Android device.");
                 m.setBody("Email body.");
 
